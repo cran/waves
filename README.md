@@ -3,21 +3,30 @@
 <!-- badges: start -->
 ![language: R](https://img.shields.io/badge/language-R-blue.svg)
 ![CRAN/METACRAN](https://img.shields.io/cran/v/waves?label=CRAN)
-[![Travis build status](https://travis-ci.org/GoreLab/waves.svg?branch=master)](https://travis-ci.org/GoreLab/waves)
+[![R build status](https://github.com/GoreLab/waves/workflows/R-CMD-check/badge.svg)](https://github.com/GoreLab/waves/actions)
 <!-- badges: end -->
 
 Originally designed application in the context of resource-limited plant research and breeding programs, `waves` provides an open-source solution to spectral data processing and model development by bringing useful packages together into a streamlined pipeline. This package is wrapper for functions related to the analysis of point visible and near-infrared reflectance measurements. It includes visualization, filtering, aggregation, preprocessing, cross-validation set formation, model training, and prediction functions to enable open-source association of spectral and reference data. 
+
+## Cite
+This package is documented in a peer-reviewed manuscript in the Plant Phenome Journal. Please cite the manuscript if you have found this package to be useful! 
+
+> Hershberger, J, Morales, N, Simoes, CC, Ellerbrock, B, Bauchet, G, Mueller, LA, Gore MA. Making waves in Breedbase: An integrated spectral data storage and analysis pipeline for plant breeding programs. Plant Phenome J. 2021; 4:e20012. https://doi.org/10.1002/ppj2.20012
+
 
 ## Use
 
 Follow the installation instructions below, and then go wild! Use `waves` to analyze your own data. Please report any bugs or feature requests by opening issues in this repository.
 
 ## Installation
+Install the latest `waves` release directly from CRAN: 
 ``` r
-install.packages(devtools)
-library(devtools)
-install_github("GoreLab/waves")
-library(waves)
+install.packages("waves")
+```
+Alternatively, install the development version to get the most up-to-date (but not necessarily thoroughly tested) version:
+``` r
+# install.packages("devtools")
+devtools::install_github("GoreLab/waves")
 ```
 
 ## Overview
