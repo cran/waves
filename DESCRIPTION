@@ -1,6 +1,6 @@
 Package: waves
 Title: Vis-NIR Spectral Analysis Wrapper
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     c(person(given = "Jenna",
              family = "Hershberger",
@@ -34,14 +34,15 @@ Depends: R (>= 3.5)
 Imports: caret, dplyr, ggplot2, lifecycle, magrittr, pls, prospectr,
         randomForest, readr, rlang, scales, spectacles, stringr,
         tibble, tidyr (>= 1.0), tidyselect
-Suggests: testthat (>= 2.1.0)
+Suggests: testthat (>= 2.1.0), knitr, rmarkdown
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
+VignetteBuilder: knitr, rmarkdown
 NeedsCompilation: no
-Packaged: 2022-01-21 00:58:40 UTC; Jenna
+Packaged: 2022-02-03 20:36:58 UTC; Jenna
 Author: Jenna Hershberger [aut, cre] (<https://orcid.org/0000-0002-3147-6867>),
   Michael Gore [ths],
   NSF BREAD IOS-1543958 [fnd]
 Repository: CRAN
-Date/Publication: 2022-01-21 03:20:02 UTC
+Date/Publication: 2022-02-03 21:00:02 UTC
