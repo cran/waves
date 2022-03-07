@@ -423,14 +423,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>summary.model.performance</code> is a <code>data.frame</code> containing summary statistics across all model training iterations and pretreatments. See below for a description of the summary statistics provided.</li>
 </ol>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>results.list<span class="sc">$</span>summary.model.performance</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   SummaryType ModelType     RMSEp        R2p       RPD      RPIQ       CCC</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        mean       pls 2.1695558 0.74145604 1.9284954 2.4855079 0.8322123</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          sd       pls 0.1370059 0.01942121 0.1076918 0.1266909 0.0298154</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3        mode       pls 2.1596998 0.74505247 1.8524633 2.5548035 0.8138290</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        Bias       SEP    RMSEcv       R2cv       R2sp best.ncomp best.ntree</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.2041069 2.1920388 1.9284746 0.78333680 0.71821869          3         NA</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.4223063 0.1384257 0.1115119 0.02938828 0.03445657          0         NA</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.6910292 2.1820807 1.8056130 0.81694237 0.73749538          3         NA</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   SummaryType ModelType     RMSEp         R2p       RPD      RPIQ        CCC</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        mean       pls 2.0864618 0.773451198 2.0706713 2.4305506 0.86179388</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2          sd       pls 0.1483492 0.008608612 0.0642832 0.1190374 0.01989453</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3        mode       pls 2.0482138 0.764283196 2.0124523 2.4060591 0.83882222</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Bias       SEP     RMSEcv       R2cv       R2sp best.ncomp best.ntree</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.001085991 2.1080837 1.95061882 0.77123858 0.74316396          3         NA</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.385046629 0.1498866 0.02262814 0.01634324 0.06769112          0         NA</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.127289612 2.0694394 1.95057306 0.78166906 0.75974348          3         NA</span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   best.mtry</span></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        NA</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2        NA</span></span>
@@ -439,29 +439,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>model.performance</code> is a <code>data.frame</code> containing performance statistics for each iteration of model training separately (see below).</li>
 </ol>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>results.list<span class="sc">$</span>model.performance</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Iteration ModelType    RMSEp       R2p      RPD     RPIQ       CCC</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1       pls 2.159700 0.7450525 1.852463 2.554804 0.8138290</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2       pls 2.311224 0.7204880 1.881295 2.339284 0.8161948</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3       pls 2.037744 0.7588277 2.051728 2.562436 0.8666130</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Bias      SEP   RMSEcv      R2cv      R2sp best.ncomp best.ntree</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  0.69102916 2.182081 1.805613 0.8169424 0.7374954          3         NA</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 -0.01649251 2.335175 1.956534 0.7706170 0.7387227          3         NA</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 -0.06221596 2.058861 2.023277 0.7624511 0.6784380          3         NA</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   best.mtry</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1        NA</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2        NA</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3        NA</span></span></code></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Iteration ModelType    RMSEp       R2p      RPD     RPIQ       CCC       Bias</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1       pls 2.048214 0.7642832 2.012452 2.406059 0.8388222  0.1272896</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2       pls 2.250190 0.7813622 2.139659 2.325664 0.8734195  0.3071933</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3       pls 1.960982 0.7747082 2.059903 2.559929 0.8731399 -0.4312250</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        SEP   RMSEcv      R2cv      R2sp best.ncomp best.ntree best.mtry</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2.069439 1.950573 0.7816691 0.7597435          3         NA        NA</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2.273508 1.928014 0.7524033 0.8010250          3         NA        NA</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 1.981303 1.973270 0.7796434 0.6687234          3         NA        NA</span></span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li><code>predictions</code> is a <code>data.frame</code> containing both reference and predicted values for each test set entry in each iteration of model training.</li>
 </ol>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results.list<span class="sc">$</span>predictions)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      Iteration ModelType unique.id    reference    predicted         </span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_1&quot;  &quot;39.6210938&quot; &quot;39.631317882234&quot; </span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_5&quot;  &quot;33.4427261&quot; &quot;31.265444161442&quot; </span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_7&quot;  &quot;35.8100014&quot; &quot;37.3742821258184&quot;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_8&quot;  &quot;26.2774601&quot; &quot;30.8322893155947&quot;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_10&quot; &quot;31.7993336&quot; &quot;34.4200704654078&quot;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,] &quot;1&quot;       &quot;pls&quot;     &quot;C16Mcal_11&quot; &quot;35.2299995&quot; &quot;36.5864554853521&quot;</span></span></code></pre></div>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Iteration ModelType  unique.id  reference        predicted</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1       pls  C16Mcal_7 35.8100014 37.4680825112723</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         1       pls C16Mcal_10 31.7993336 34.0812156273942</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         1       pls C16Mcal_13 35.3550529 34.7090151881212</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         1       pls C16Mcal_15 31.6499996 32.3278523803807</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         1       pls C16Mcal_18 39.5632248 37.8614155675978</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6         1       pls C16Mcal_19 39.7091141 38.5896783108686</span></span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li><code>importance</code> is a <code>data.frame</code> containing variable importance results for each wavelength at each iteration of model training. If <code>model.method</code> is not “pls” or “rf”, this list item is <code>NULL</code>.</li>
 </ol>
@@ -469,9 +465,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 7</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Iteration ModelType   X350   X351   X352   X353   X354</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       &lt;int&gt; &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1 pls       0.0290 0.0297 0.0329 0.0321 0.0320</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2 pls       0.0245 0.0268 0.0294 0.0291 0.0274</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3 pls       0.0237 0.0246 0.0245 0.0239 0.0241</span></span></code></pre></div>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1 pls       0.0293 0.0290 0.0309 0.0314 0.0309</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         2 pls       0.0262 0.0262 0.0281 0.0265 0.0261</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         3 pls       0.0323 0.0334 0.0331 0.0323 0.0324</span></span></code></pre></div>
 <table>
 <colgroup>
 <col width="25%" />
