@@ -3,7 +3,9 @@
 <!-- badges: start -->
 ![language: R](https://img.shields.io/badge/language-R-blue.svg)
 ![CRAN/METACRAN](https://img.shields.io/cran/v/waves?label=CRAN)
-[![R build status](https://github.com/GoreLab/waves/workflows/R-CMD-check/badge.svg)](https://github.com/GoreLab/waves/actions)
+[![R-CMD-check](https://github.com/GoreLab/waves/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/GoreLab/waves/actions/workflows/R-CMD-check.yaml)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/waves)](https://CRAN.R-project.org/package=waves)
+
 <!-- badges: end -->
 
 Originally designed application in the context of resource-limited plant research and breeding programs, `waves` provides an open-source solution to spectral data processing and model development by bringing useful packages together into a streamlined pipeline. This package is wrapper for functions related to the analysis of point visible and near-infrared reflectance measurements. It includes visualization, filtering, aggregation, pretreatment, cross-validation set formation, model training, and prediction functions to enable open-source association of spectral and reference data. 
