@@ -15,13 +15,13 @@ library(ggplot2)
 library(tibble)
 
 ## ----install_cran, eval=FALSE-------------------------------------------------
-#  install.packages("waves")
-#  library(waves)
+# install.packages("waves")
+# library(waves)
 
 ## ----install_dev, eval=FALSE--------------------------------------------------
-#  install.packages("devtools")
-#  devtools::install_github("GoreLab/waves")
-#  library(waves)
+# install.packages("devtools")
+# devtools::install_github("GoreLab/waves")
+# library(waves)
 
 ## ----format-------------------------------------------------------------------
 ikeogu.2017[1:7, 1:7]
@@ -116,9 +116,9 @@ model.to.save <- ikeogu.2017.prepped %>%
   save_model(
     df = .,
     write.model = FALSE,
-    pretreatment = 1:13,
-    tune.length = 5,
-    num.iterations = 3,
+    pretreatment = c(1, 2, 8),  # Raw, SNV, and SNVSG (typically best performers)
+    tune.length = 3,
+    num.iterations = 2,
     verbose = FALSE
     )
 
@@ -133,9 +133,16 @@ model.to.save$best.model.stats %>%
               names_from = statistic, values_from = value)
 
 ## ----prep_for_predictions-----------------------------------------------------
+# Get the best pretreatment number from model stats
+best.pretreatment.name <- model.to.save$best.model.stats$Pretreatment
+best.pretreatment.num <- match(best.pretreatment.name, 
+                               c("Raw_data", "SNV", "SNV1D", "SNV2D", "D1", "D2", "SG",
+                                 "SNVSG", "SGD1", "SG.D1W5", "SG.D1W11", "SG.D2W5", "SG.D2W11"))
+
+# Use the example validation set (C16Mval)
 pretreated.val <- ikeogu.2017.prepped %>%
-  filter(study.name == "C16Mval") %>%
-  pretreat_spectra(pretreatment = 8)
+  dplyr::filter(study.name == "C16Mval") %>%
+  pretreat_spectra(pretreatment = best.pretreatment.num)
 
 pretreated.val.mx <- pretreated.val %>%
   dplyr::select(starts_with("X")) %>%
