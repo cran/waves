@@ -21,10 +21,10 @@ train_spectra(
   split.test = FALSE,
   seed = 1,
   verbose = TRUE,
-  save.model = deprecated(),
-  rf.variable.importance = deprecated(),
-  output.summary = deprecated(),
-  return.model = deprecated()
+  save.model = lifecycle::deprecated(),
+  rf.variable.importance = lifecycle::deprecated(),
+  output.summary = lifecycle::deprecated(),
+  return.model = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -148,7 +148,7 @@ Included summary statistics:
     }
   \item \strong{RMSECV}, the root mean squared error of cross-validation
   \item \strong{R2cv}, the coefficient of multiple determination of
-  cross-validation for PLSR models
+  cross-validation (k-fold CV for pls/svm; OOB for rf)
   \item \strong{RMSEP}, the root mean squared error of prediction
   \item \strong{R2p}, the squared Pearson’s correlation between predicted and
   observed test set values

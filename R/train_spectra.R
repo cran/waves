@@ -79,7 +79,7 @@
 #'     }
 #'   \item \strong{RMSECV}, the root mean squared error of cross-validation
 #'   \item \strong{R2cv}, the coefficient of multiple determination of
-#'   cross-validation for PLSR models
+#'   cross-validation (k-fold CV for pls/svm; OOB for rf)
 #'   \item \strong{RMSEP}, the root mean squared error of prediction
 #'   \item \strong{R2p}, the squared Pearson’s correlation between predicted and
 #'   observed test set values
@@ -142,10 +142,10 @@ train_spectra <- function(df,
                           split.test = FALSE,
                           seed = 1,
                           verbose = TRUE,
-                          save.model = deprecated(),
-                          rf.variable.importance = deprecated(),
-                          output.summary = deprecated(),
-                          return.model = deprecated()) {
+                          save.model = lifecycle::deprecated(),
+                          rf.variable.importance = lifecycle::deprecated(),
+                          output.summary = lifecycle::deprecated(),
+                          return.model = lifecycle::deprecated()) {
 
   # Deprecate warnings ---------------------------
   handle_deprecations(
@@ -182,6 +182,9 @@ train_spectra <- function(df,
     num.iterations <- 1
   }
 
+  # Set seed before any random operations for full reproducibility
+  set.seed(seed)
+
   # Determine partition input for stratified sampling
   partition.input.df <- if (is.null(test.data)) df else test.data
 
@@ -190,7 +193,7 @@ train_spectra <- function(df,
   if (stratified.sampling && is.null(cv.scheme)) {
     train.index <- caret::createDataPartition(
       y = partition.input.df$reference,
-      p = proportion.train, 
+      p = proportion.train,
       times = num.iterations
     )
   }
@@ -199,13 +202,6 @@ train_spectra <- function(df,
   spectra.cols <- which(startsWith(names(df), "X"))
   ref.col <- which(names(df) == "reference")
   ref.spectra.cols <- c(ref.col, spectra.cols)  # Pre-combine for repeated use
-  
-  if (!is.null(test.data)) {
-    test.spectra.cols <- which(startsWith(names(test.data), "X"))
-  }
-  
-  # Pre-calculate CV seeds
-  cv.seeds <- if (num.iterations > 9) c(1:num.iterations) else c(1:10)
 
   # Set up results storage
   predictions.list <- vector("list", length = num.iterations)
@@ -213,7 +209,6 @@ train_spectra <- function(df,
   importance.list <- vector("list", length = num.iterations)
 
   # Main training loop ---------------------------
-  set.seed(seed)
   
   for (i in 1:num.iterations) {
     # Partition data for this iteration
@@ -235,16 +230,16 @@ train_spectra <- function(df,
     data.train <- partitioned.data$train
     data.test <- partitioned.data$test
 
-    # Prepare training data
-    train.ref.spectra <- data.train[, ref.spectra.cols, drop = FALSE]
-    names(train.ref.spectra)[1] <- "reference"  # Ensure reference column name
-    
+    # Prepare training data - recompute indices from partitioned data to handle
+    # cv.scheme, where format_cv() removes the genotype column
+    train.spectra.idx <- which(startsWith(names(data.train), "X"))
+    train.ref.idx <- which(names(data.train) == "reference")
+    train.ref.spectra <- data.train[, c(train.ref.idx, train.spectra.idx), drop = FALSE]
+    names(train.ref.spectra)[1] <- "reference"
+
     # Prepare test data
-    if (!is.null(test.data)) {
-      test.spectra <- as.matrix(data.test[, test.spectra.cols, drop = FALSE])
-    } else {
-      test.spectra <- as.matrix(data.test[, spectra.cols, drop = FALSE])
-    }
+    test.spectra.idx <- which(startsWith(names(data.test), "X"))
+    test.spectra <- as.matrix(data.test[, test.spectra.idx, drop = FALSE])
 
     # Train model and get predictions
     model.results <- train_individual_model(
@@ -253,8 +248,7 @@ train_spectra <- function(df,
       model.method = model.method,
       tune.length = tune.length,
       k.folds = k.folds,
-      best.model.metric = best.model.metric,
-      cv.seeds = cv.seeds
+      best.model.metric = best.model.metric
     )
 
     # Calculate performance statistics
@@ -299,7 +293,7 @@ train_spectra <- function(df,
   # Create summary data.frame ---------------------------
   summary.df <- rbind(
     dplyr::summarise(results.df, dplyr::across(dplyr::everything(), mean)),
-    dplyr::summarise(results.df, dplyr::across(dplyr::everything(), sd, na.rm = TRUE)),
+    dplyr::summarise(results.df, dplyr::across(dplyr::everything(), \(x) sd(x, na.rm = TRUE))),
     dplyr::summarise(results.df, dplyr::across(dplyr::everything(), get_mode))
   ) %>%
     mutate(
@@ -322,31 +316,57 @@ train_spectra <- function(df,
   # of this model's performance, but they will have been generated with
   # only subsets of the data.
   if (verbose) cat("Returning model...\n")
-  
+
+  # Determine training data for final model.
+  # When cv.scheme is used, call format_cv() to get the training set defined
+  # by the chosen scheme. The test set is always t1.a (held-out genotypes from
+  # trial1). Training sets vary by scheme: CV0/CV00 use trial2+trial3;
+  # CV1 uses t1.b+t2.b; CV2 uses t1.b+trial2.
+  if (!is.null(cv.scheme)) {
+    final.train <- format_cv(
+      trial1 = trial1,
+      trial2 = trial2,
+      trial3 = trial3,
+      cv.scheme = cv.scheme,
+      stratified.sampling = stratified.sampling,
+      proportion.train = proportion.train,
+      seed = seed,
+      remove.genotype = TRUE
+    )$train.set
+  } else {
+    final.train <- df
+  }
+
+  # Compute column indices from final.train (may differ from df when
+  # cv.scheme removes the genotype column)
+  final.spectra.cols <- which(startsWith(names(final.train), "X"))
+  final.ref.col <- which(names(final.train) == "reference")
+  final.ref.spectra.cols <- c(final.ref.col, final.spectra.cols)
+
   # Set up cross-validation for final model (needed for SVM models)
-  cv.kfold <- create_cv_control(k.folds = k.folds, cv.seeds = cv.seeds)
-  
+  cv.kfold <- create_cv_control(k.folds = k.folds)
+
   if (model.method == "pls") {
-    # Format df for plsr() function using optimized indexing
-    df.plsr <- as.data.frame(df[, -spectra.cols, drop = FALSE])
-    df.plsr$spectra <- as.matrix(df[, spectra.cols, drop = FALSE])
+    df.plsr <- as.data.frame(final.train[, -final.spectra.cols, drop = FALSE])
+    df.plsr$spectra <- as.matrix(final.train[, final.spectra.cols, drop = FALSE])
     full.model <- pls::plsr(reference ~ spectra,
-      ncomp = tune.length,
+      ncomp = get_mode(results.df$best.ncomp),
       data = df.plsr
     )
   }
   if (model.method == "rf") {
-    df.rf <- df[, ref.spectra.cols, drop = FALSE]
-    names(df.rf)[1] <- "reference"  # Ensure reference column name
+    df.rf <- final.train[, final.ref.spectra.cols, drop = FALSE]
+    names(df.rf)[1] <- "reference"
     full.model <- randomForest::randomForest(reference ~ .,
       data = df.rf,
       importance = FALSE,
-      ntree = tune.length
+      ntree = 500,
+      mtry = get_mode(results.df$best.mtry)
     )
   }
   if (model.method == "svmLinear" || model.method == "svmRadial") {
     full.model <- caret::train(reference ~ .,
-      data = df,
+      data = final.train[, final.ref.spectra.cols, drop = FALSE],
       method = model.method,
       tuneLength = tune.length,
       trControl = cv.kfold,

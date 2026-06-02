@@ -46,7 +46,7 @@ predict_spectra <- function(input.data,
                             model.stats.location,
                             model.location,
                             model.method = "pls",
-                            wavelengths = deprecated()) {
+                            wavelengths = lifecycle::deprecated()) {
   if (lifecycle::is_present(wavelengths)) {
     lifecycle::deprecate_warn(
       when = "0.2.0",
@@ -79,24 +79,17 @@ predict_spectra <- function(input.data,
   # Predict values using imported model, pretreated/formatted input data,
   # and method of choice -------------------------------------------------------
   if (model.method == "pls") {
-    # Extract best number of components
-    best.ncomp <- model.stats$best.ncomp_mode[1]
-    # Get predictions
     predicted.values <- as.numeric(predict(final.model,
       newdata = as.matrix(pretreated[2:ncol(pretreated)]),
-      ncomp = best.ncomp
+      ncomp = final.model$ncomp
     ))
   } else if (model.method == "svmLinear") {
     predicted.values <- as.numeric(predict(final.model, newdata = pretreated))
   } else if (model.method == "svmRadial") {
     predicted.values <- as.numeric(predict(final.model, newdata = pretreated))
   } else if (model.method == "rf") {
-    best.ntree <- final.model$ntree
-    best.mtry <- final.model$mtry
     predicted.values <- as.numeric(predict(final.model,
-      newdata = pretreated,
-      ntree = best.ntree,
-      mtry = best.mtry
+      newdata = pretreated
     ))
   }
 
